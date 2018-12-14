@@ -931,15 +931,4 @@ make_authorization(AccessKeyId, SecretKey, Method, ContentMD5, ContentType, Date
     Signature = base64:encode(crypto:hmac(sha, SecretKey, StringToSign)),
     {StringToSign, ["AWS ", AccessKeyId, $:, Signature]}.
 
-default_config() ->
-    Defaults =  envy:get(mini_s3, s3_defaults, list),
-    case proplists:is_defined(key_id, Defaults) andalso
-        proplists:is_defined(secret_access_key, Defaults) of
-        true ->
-            {key_id, Key} = proplists:lookup(key_id, Defaults),
-            {secret_access_key, AccessKey} =
-                proplists:lookup(secret_access_key, Defaults),
-            #config{access_key_id=Key, secret_access_key=AccessKey};
-        false ->
-            throw({error, missing_s3_defaults})
-    end.
+default_config() -> #config{}.
